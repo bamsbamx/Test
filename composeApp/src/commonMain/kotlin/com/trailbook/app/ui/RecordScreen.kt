@@ -79,6 +79,7 @@ fun RecordScreen(container: AppContainer) {
                 return@launch
             }
             container.recordLocationError(null)
+            scope.launch { container.permissionManager.request(com.trailbook.platform.PermissionType.NOTIFICATIONS) }
             try {
                 container.locationProvider.updates(2000).collect { update ->
                     when (update) {
