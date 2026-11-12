@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 enum class PermissionStatus { GRANTED, DENIED, NOT_DETERMINED, UNAVAILABLE }
 
-enum class PermissionType { LOCATION_FINE, LOCATION_BACKGROUND, CAMERA }
+enum class PermissionType { LOCATION_FINE, LOCATION_BACKGROUND, CAMERA, NOTIFICATIONS }
 
 interface PermissionManager {
     fun status(type: PermissionType): PermissionStatus

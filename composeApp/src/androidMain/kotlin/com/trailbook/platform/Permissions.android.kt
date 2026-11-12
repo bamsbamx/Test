@@ -17,6 +17,10 @@ class AndroidPermissionManager : PermissionManager {
         PermissionType.CAMERA ->
             if (ContextCompat.checkSelfPermission(AndroidContext.context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
                 PermissionStatus.GRANTED else PermissionStatus.NOT_DETERMINED
+        PermissionType.NOTIFICATIONS ->
+            if (android.os.Build.VERSION.SDK_INT < 33 ||
+                androidx.core.app.NotificationManagerCompat.from(AndroidContext.context).areNotificationsEnabled()
+            ) PermissionStatus.GRANTED else PermissionStatus.NOT_DETERMINED
     }
 
     override suspend fun request(type: PermissionType): PermissionStatus {
@@ -25,7 +29,9 @@ class AndroidPermissionManager : PermissionManager {
             PermissionType.LOCATION_FINE -> Manifest.permission.ACCESS_FINE_LOCATION
             PermissionType.LOCATION_BACKGROUND -> Manifest.permission.ACCESS_BACKGROUND_LOCATION
             PermissionType.CAMERA -> Manifest.permission.CAMERA
+            PermissionType.NOTIFICATIONS -> if (android.os.Build.VERSION.SDK_INT >= 33) Manifest.permission.POST_NOTIFICATIONS else null
         }
+        if (permission == null) return PermissionStatus.GRANTED
         if (ContextCompat.checkSelfPermission(AndroidContext.context, permission) == PackageManager.PERMISSION_GRANTED) {
             return PermissionStatus.GRANTED
         }

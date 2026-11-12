@@ -27,6 +27,7 @@ class IosPermissionManager : PermissionManager {
             else -> PermissionStatus.DENIED
         }
         PermissionType.CAMERA -> PermissionStatus.NOT_DETERMINED
+        PermissionType.NOTIFICATIONS -> PermissionStatus.GRANTED
     }
 
     override suspend fun request(type: PermissionType): PermissionStatus {
